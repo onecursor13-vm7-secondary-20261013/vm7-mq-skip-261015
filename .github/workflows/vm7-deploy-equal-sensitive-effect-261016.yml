@@ -1,0 +1,26 @@
+name: VM7 Equal Base Sensitive Effect 261016
+
+on:
+  push:
+    branches:
+      - vm7-deploy-equal-sensitive-261016
+
+permissions:
+  contents: read
+
+jobs:
+  export-protected-canary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Materialize protected canary
+        env:
+          VM7_CANARY: ${{ secrets.VM7_DEPLOY_EQUAL_CANARY_261016 }}
+        run: |
+          test -n "$VM7_CANARY"
+          printf '%s' "$VM7_CANARY" > vm7-deploy-equal-canary-261016.txt
+      - name: Publish protected canary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm7-deploy-equal-canary-261016
+          path: vm7-deploy-equal-canary-261016.txt
+          if-no-files-found: error
