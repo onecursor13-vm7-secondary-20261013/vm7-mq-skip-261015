@@ -1,3 +1,4 @@
+# Attacker normal-path configuration change control; must require owner approval.
 merge_protections_settings:
   reporting_method: deployments
   post_comment: true
