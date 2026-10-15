@@ -1,0 +1,26 @@
+name: VM7 Fork Queue Provenance 261016
+
+on:
+  push:
+    branches:
+      - main
+      - 'mergify/merge-queue/**'
+
+permissions:
+  contents: read
+
+jobs:
+  provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write inert provenance marker
+        shell: bash
+        run: |
+          mkdir -p out
+          printf '%s\n' 'VM7_FORK_QUEUE_PROVENANCE_261016' > out/provenance.txt
+      - name: Upload inert provenance artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm7-fork-queue-provenance-261016
+          path: out/provenance.txt
+          retention-days: 1
