@@ -1,3 +1,4 @@
+# Attacker normal-path configuration change control; owner approval required.
 # Final owner-only fixture created after removing the attacker collaborator.
 merge_protections_settings:
   reporting_method: check-runs
