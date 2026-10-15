@@ -1,0 +1,16 @@
+name: VM7 Protected Environment Init 261016
+
+on:
+  push:
+    branches:
+      - vm7-env-init-261016
+
+permissions:
+  contents: read
+
+jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    environment: vm7-protected-env-261016
+    steps:
+      - run: echo 'initialize disposable protected environment'
