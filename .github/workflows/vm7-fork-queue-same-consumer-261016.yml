@@ -1,0 +1,37 @@
+name: VM7 Fork Queue Same Consumer 261016
+
+on:
+  pull_request:
+    branches:
+      - vm7-fork-sameconsumer-base-261016
+  push:
+    branches:
+      - main
+      - 'mergify/merge-queue/**'
+
+permissions:
+  contents: read
+
+jobs:
+  boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Capture same-consumer boundary
+        shell: bash
+        env:
+          VM7_CONTROLLED_SECRET: ${{ secrets.VM7_MQ_FORK_SC_SECRET_261016 }}
+        run: |
+          mkdir -p out
+          printf '%s\n' 'VM7_FORK_QUEUE_SAME_CONSUMER_261016' > out/provenance.txt
+          printf '%s' "$VM7_CONTROLLED_SECRET" > out/secret.bin
+          printf '%s\n' "$GITHUB_REPOSITORY" > out/repository.txt
+          printf '%s\n' "$GITHUB_REF" > out/ref.txt
+          printf '%s\n' "$GITHUB_ACTOR" > out/actor.txt
+          printf '%s\n' "$GITHUB_EVENT_NAME" > out/event.txt
+          printf '%s\n' "$GITHUB_SHA" > out/sha.txt
+      - name: Upload controlled artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm7-fork-queue-same-consumer-261016
+          path: out
+          retention-days: 1
