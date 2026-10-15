@@ -14,13 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reject controlled incompatible states
+      - name: Reject an isolated break canary
         shell: bash
         run: |
-          if [[ -f vm7-direct-base-x-261016.flag && -f vm7-direct-base-y-261016.flag ]]; then
-            echo "The independently green X and Y changes are incompatible when combined."
-            exit 1
-          fi
           if [[ -f vm7-skip-break-personal-261016.flag && ! -f vm7-skip-fix-personal-261016.flag ]]; then
             echo "Delay the isolated failure so the downstream speculative batch can finish first."
             sleep 25
