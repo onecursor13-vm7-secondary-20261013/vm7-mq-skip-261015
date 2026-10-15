@@ -4,8 +4,9 @@ queue_rules:
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
     merge_conditions:
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
-      - check-success = VM7 Skip Intermediate Personal CI 261016 / VM7 Skip Intermediate Personal Gate 261016 (pull_request)
+      - check-success = VM7 Skip Intermediate Personal Gate 261016
     batch_size: 1
+    checks_timeout: 1 min
     merge_method: merge
 
 merge_queue:

@@ -18,6 +18,8 @@ jobs:
         shell: bash
         run: |
           if [[ -f vm7-skip-break-personal-261016.flag && ! -f vm7-skip-fix-personal-261016.flag ]]; then
+            echo "Delay the isolated failure so the downstream speculative batch can finish first."
+            sleep 25
             echo "The break canary is present without its independent fix canary."
             exit 1
           fi
