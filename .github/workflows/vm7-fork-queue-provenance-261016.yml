@@ -1,0 +1,32 @@
+name: VM7 Fork Queue Provenance 261016
+
+on:
+  push:
+    branches:
+      - main
+      - 'mergify/merge-queue/**'
+
+permissions:
+  contents: read
+
+jobs:
+  provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Capture controlled provenance and secret
+        shell: bash
+        env:
+          VM7_CONTROLLED_SECRET: ${{ secrets.VM7_MQ_FORK_SECRET_261016 }}
+        run: |
+          mkdir -p out
+          printf '%s\n' 'VM7_FORK_QUEUE_PROVENANCE_261016' > out/provenance.txt
+          printf '%s' "$VM7_CONTROLLED_SECRET" > out/secret.bin
+          printf '%s\n' "$GITHUB_REPOSITORY" > out/repository.txt
+          printf '%s\n' "$GITHUB_REF" > out/ref.txt
+          printf '%s\n' "$GITHUB_ACTOR" > out/actor.txt
+      - name: Upload controlled artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm7-fork-queue-secret-261016
+          path: out
+          retention-days: 1
