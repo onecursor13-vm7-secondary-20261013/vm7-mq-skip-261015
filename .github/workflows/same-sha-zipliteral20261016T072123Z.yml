@@ -1,0 +1,27 @@
+name: Same-SHA protected Environment zipliteral20261016T072123Z
+on:
+  push:
+    branches:
+      - same-sha-a-zipliteral20261016T072123Z
+      - same-sha-b-zipliteral20261016T072123Z
+      - vm7-check-env-sensitive-261016
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    environment: vm7-protected-env-261016
+    steps:
+      - name: Hash canary without logging it
+        shell: bash
+        env:
+          CANARY: ${{ secrets.VM7_GATE4_PROTECTED_SECRET_261016 }}
+        run: |
+          set -euo pipefail
+          test -n "$CANARY"
+          printf '%s' "$CANARY" | sha256sum | cut -d' ' -f1 > canary.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: same-sha-canary-zipliteral20261016T072123Z
+          path: canary.sha256
+          if-no-files-found: error
