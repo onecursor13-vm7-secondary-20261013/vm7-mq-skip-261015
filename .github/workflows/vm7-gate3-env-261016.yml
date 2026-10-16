@@ -1,0 +1,30 @@
+name: VM7 Gate3 Same-SHA Protected Environment 261016
+
+on:
+  push:
+    branches:
+      - vm7-gate3-a-261016
+      - vm7-gate3-b-261016
+      - vm7-check-env-sensitive-261016
+
+permissions:
+  contents: read
+
+jobs:
+  capture-protected-secret-hash:
+    runs-on: ubuntu-latest
+    environment: vm7-protected-env-261016
+    steps:
+      - name: Hash protected environment secret
+        env:
+          CANARY: ${{ secrets.VM7_PROTECTED_ENV_SECRET_261016 }}
+        run: |
+          set -euo pipefail
+          test -n "$CANARY"
+          printf '%s' "$CANARY" | sha256sum | cut -d' ' -f1 > gate3-secret-sha256.txt
+      - name: Upload hash evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm7-gate3-secret-hash-261016
+          path: gate3-secret-sha256.txt
+          if-no-files-found: error
