@@ -39,9 +39,3 @@ merge_protections:
       - base = vm7-report-sensitive-261016
     success_conditions:
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
-
-  - name: Require current Tertiary Write approval on reviewer permission target
-    if:
-      - base = vm7-reviewer-perm-target-261017
-    success_conditions:
-      - approved-reviews-by = livastic-vm5-secondary-20260911
