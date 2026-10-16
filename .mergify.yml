@@ -1,13 +1,3 @@
-pull_request_rules:
-  - name: vm7-author-update-consent-discriminator-261016
-    conditions:
-      - base = main
-      - head = vm7-author-update-consent-261016
-      - title = VM7_AUTHOR_UPDATE_CONSENT_261016
-    actions:
-      update:
-        bot_account: "{{ author }}"
-
 # Owner-approved exact fixture for same-SHA cross-PR environment-boundary validation.
 merge_protections_settings:
   reporting_method: check-runs
