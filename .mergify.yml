@@ -1,4 +1,33 @@
-# Owner-approved exact fixture for same-SHA cross-PR environment-boundary validation.
+scopes:
+  source:
+    files:
+      alpha:
+        include:
+          - scope-alpha/**/*
+      beta:
+        include:
+          - scope-beta/**/*
+  barrier_files:
+    include:
+      - scope-global/**/*
+
+queue_rules:
+  - name: vm7-direct-merge-head-scope-transition-261018
+    queue_conditions:
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+      - check-success = VM7 Skip Intermediate Personal Gate 261016
+    merge_conditions:
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+      - check-success = VM7 Skip Intermediate Personal Gate 261016
+    batch_size: 1
+    checks_timeout: 2 min
+    merge_method: merge
+
+merge_queue:
+  mode: serial
+  max_parallel_checks: 1
+  status_comments: all
+
 merge_protections_settings:
   reporting_method: check-runs
   post_comment: true
