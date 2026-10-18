@@ -22,6 +22,7 @@ queue_rules:
     batch_size: 1
     checks_timeout: 2 min
     merge_method: merge
+    allow_inplace_checks: false
 
 merge_queue:
   mode: serial
