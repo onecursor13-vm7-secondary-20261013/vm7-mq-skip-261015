@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - vm7-mq-protected-261016
+      - vm7-barrier-base-261018
 
 permissions:
   contents: read
