@@ -1,4 +1,3 @@
-extends: h1-mergify-repro-h1r1792058848
 # Owner-approved exact fixture for same-SHA cross-PR environment-boundary validation.
 merge_protections_settings:
   reporting_method: check-runs
