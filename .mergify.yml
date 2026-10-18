@@ -21,12 +21,12 @@ queue_rules:
       - check-success = VM7 Skip Intermediate Personal Gate 261016
     batch_size: 1
     checks_timeout: 2 min
+    max_checks_retries: 1
     merge_method: merge
-    allow_inplace_checks: false
 
 merge_queue:
   mode: serial
-  max_parallel_checks: 2
+  max_parallel_checks: 1
   status_comments: all
 
 merge_protections_settings:
