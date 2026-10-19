@@ -1,4 +1,4 @@
-name: VM7 Skip Intermediate Personal CI 261016
+name: VM7 MQ Retry Aggregation CI 261019
 
 on:
   pull_request:
@@ -9,18 +9,37 @@ permissions:
   contents: read
 
 jobs:
-  gate:
+  legacy-setup-gate:
     name: VM7 Skip Intermediate Personal Gate 261016
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Reject an isolated break canary
+      - name: Preserve the pretest queue installation path
+        run: echo "Compatibility success for setup and cleanup only"
+
+  retry-a:
+    name: VM7 Retry A 261019
+    runs-on: ubuntu-latest
+    steps:
+      - name: A succeeds only on odd draft PR numbers
         shell: bash
         run: |
-          if [[ -f vm7-skip-break-personal-261016.flag && ! -f vm7-skip-fix-personal-261016.flag ]]; then
-            echo "Delay the isolated failure so the downstream speculative batch can finish first."
-            sleep 25
-            echo "The break canary is present without its independent fix canary."
+          echo "PR_NUMBER=${{ github.event.pull_request.number }}"
+          if (( ${{ github.event.pull_request.number }} % 2 == 0 )); then
+            echo "A intentionally fails on even PR numbers"
             exit 1
           fi
-          echo "The combined state is acceptable."
+          echo "A intentionally succeeds on odd PR numbers"
+
+  retry-b:
+    name: VM7 Retry B 261019
+    runs-on: ubuntu-latest
+    steps:
+      - name: B succeeds only on even draft PR numbers
+        shell: bash
+        run: |
+          echo "PR_NUMBER=${{ github.event.pull_request.number }}"
+          if (( ${{ github.event.pull_request.number }} % 2 == 1 )); then
+            echo "B intentionally fails on odd PR numbers"
+            exit 1
+          fi
+          echo "B intentionally succeeds on even PR numbers"
