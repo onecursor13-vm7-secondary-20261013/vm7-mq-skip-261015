@@ -1,10 +1,15 @@
 queue_rules:
-  - name: vm7-skip-intermediate-dequeue-personal-261016
+  - name: vm7-skip-intermediate-member-close-261020
     queue_conditions:
+      - base = vm7-mq-protected-261016
+      - author = livastic-vm7-r61donor-261017
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
     merge_conditions:
+      - base = vm7-mq-protected-261016
+      - author = livastic-vm7-r61donor-261017
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
       - check-success = VM7 Skip Intermediate Personal Gate 261016
+    branch_protection_injection_mode: merge
     batch_size: 1
     checks_timeout: 1 min
     merge_method: merge
