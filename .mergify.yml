@@ -1,4 +1,4 @@
-# Owner-approved exact fixture for same-SHA cross-PR environment-boundary validation.
+# Owner-approved exact fixture for cross-attempt merge-queue check isolation.
 merge_protections_settings:
   reporting_method: check-runs
   post_comment: true
@@ -44,10 +44,9 @@ queue_rules:
   - name: vm7-retry-cross-attempt-aggregation-261019
     queue_conditions:
       - base = vm7-mq-protected-261016
+      - author = livastic-vm7-r61donor-261017
       - title = VM7_RETRY_ATTACK_261019
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
     merge_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
       - check-success = VM7 Retry A 261019
       - check-success = VM7 Retry B 261019
     batch_size: 1
@@ -81,3 +80,14 @@ merge_queue:
   mode: serial
   max_parallel_checks: 1
   status_comments: all
+
+pull_request_rules:
+  - name: auto-queue exact external Read retry discriminator 261019
+    conditions:
+      - base = vm7-mq-protected-261016
+      - author = livastic-vm7-r61donor-261017
+      - title = VM7_RETRY_ATTACK_261019
+      - -draft
+    actions:
+      queue:
+        name: vm7-retry-cross-attempt-aggregation-261019
