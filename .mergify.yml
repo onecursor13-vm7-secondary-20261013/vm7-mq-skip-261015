@@ -1,93 +1,16 @@
-# Owner-approved exact fixture for cross-attempt merge-queue check isolation.
-merge_protections_settings:
-  reporting_method: check-runs
-  post_comment: true
-
-merge_protections:
-  - name: Require Secondary Owner approval on final configuration branch
-    if:
-      - base = main
-    success_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-  - name: Require Secondary Owner approval on final allowed ref
-    if:
-      - base = vm7-check-final-allow-261016
-    success_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-  - name: Require Secondary Owner approval on final sensitive ref
-    if:
-      - base = vm7-check-final-sensitive-261016
-    success_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-  - name: Require Secondary Owner approval on environment allowed ref
-    if:
-      - base = vm7-check-env-allow-261016
-    success_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-  - name: Require Secondary Owner approval on environment sensitive ref
-    if:
-      - base = vm7-check-env-sensitive-261016
-    success_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-  - name: Require Secondary Owner approval on report allowed ref
-    if:
-      - base = vm7-report-allow-261016
-    success_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-  - name: Require Secondary Owner approval on report sensitive ref
-    if:
-      - base = vm7-report-sensitive-261016
-    success_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-
 queue_rules:
-  - name: vm7-retry-cross-attempt-aggregation-261019
+  - name: vm7-skip-intermediate-dequeue-personal-261016
     queue_conditions:
-      - base = vm7-mq-protected-261016
-      - author = livastic-vm7-r61donor-261017
-      - title = VM7_RETRY_ATTACK_261019
-    merge_conditions:
-      - check-success = VM7 Retry A 261019
-      - check-success = VM7 Retry B 261019
-    batch_size: 1
-    checks_timeout: 5 min
-    max_checks_retries: 2
-    merge_method: merge
-
-  - name: vm7-retry-fixture-maintenance-261019
-    queue_conditions:
-      - base = vm7-mq-protected-261016
-      - title ~= ^VM7_RETRY_(SETUP|CLEANUP)_261019$
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
     merge_conditions:
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
       - check-success = VM7 Skip Intermediate Personal Gate 261016
     batch_size: 1
-    checks_timeout: 5 min
-    merge_method: merge
-
-  - name: vm7-retry-main-config-cleanup-261019
-    queue_conditions:
-      - base = main
-      - title = VM7_RETRY_MAIN_CONFIG_CLEANUP_261019
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-    merge_conditions:
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-    batch_size: 1
+    checks_timeout: 1 min
     merge_method: merge
 
 merge_queue:
   mode: serial
-  max_parallel_checks: 1
+  max_parallel_checks: 2
+  skip_intermediate_results: true
   status_comments: all
-
-pull_request_rules:
-  - name: auto-queue exact external Read retry discriminator 261019
-    conditions:
-      - base = vm7-mq-protected-261016
-      - author = livastic-vm7-r61donor-261017
-      - title = VM7_RETRY_ATTACK_261019
-      - -draft
-    actions:
-      queue:
-        name: vm7-retry-cross-attempt-aggregation-261019
