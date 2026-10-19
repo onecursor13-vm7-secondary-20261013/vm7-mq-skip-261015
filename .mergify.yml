@@ -39,3 +39,45 @@ merge_protections:
       - base = vm7-report-sensitive-261016
     success_conditions:
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
+
+queue_rules:
+  - name: vm7-retry-cross-attempt-aggregation-261019
+    queue_conditions:
+      - base = vm7-mq-protected-261016
+      - title = VM7_RETRY_ATTACK_261019
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+    merge_conditions:
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+      - check-success = VM7 Retry A 261019
+      - check-success = VM7 Retry B 261019
+    batch_size: 1
+    checks_timeout: 5 min
+    max_checks_retries: 2
+    merge_method: merge
+
+  - name: vm7-retry-fixture-maintenance-261019
+    queue_conditions:
+      - base = vm7-mq-protected-261016
+      - title ~= ^VM7_RETRY_(SETUP|CLEANUP)_261019$
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+    merge_conditions:
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+      - check-success = VM7 Skip Intermediate Personal Gate 261016
+    batch_size: 1
+    checks_timeout: 5 min
+    merge_method: merge
+
+  - name: vm7-retry-main-config-cleanup-261019
+    queue_conditions:
+      - base = main
+      - title = VM7_RETRY_MAIN_CONFIG_CLEANUP_261019
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+    merge_conditions:
+      - approved-reviews-by = onecursor13-vm7-secondary-20261013
+    batch_size: 1
+    merge_method: merge
+
+merge_queue:
+  mode: serial
+  max_parallel_checks: 1
+  status_comments: all
