@@ -1,27 +1,16 @@
 queue_rules:
-  - name: vm7-retry-cross-attempt-aggregation-261019
+  - name: vm7-skip-intermediate-dequeue-personal-261016
     queue_conditions:
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
     merge_conditions:
       - approved-reviews-by = onecursor13-vm7-secondary-20261013
-      - check-success = VM7 Retry A 261019
-      - check-success = VM7 Retry B 261019
+      - check-success = VM7 Skip Intermediate Personal Gate 261016
     batch_size: 1
-    checks_timeout: 5 min
-    max_checks_retries: 2
+    checks_timeout: 1 min
     merge_method: merge
-
-pull_request_rules:
-  - name: authorized retry experiment cleanup only
-    conditions:
-      - base = vm7-mq-protected-261016
-      - title = VM7_RETRY_CLEANUP_261019
-      - approved-reviews-by = onecursor13-vm7-secondary-20261013
-    actions:
-      merge:
-        method: merge
 
 merge_queue:
   mode: serial
-  max_parallel_checks: 1
+  max_parallel_checks: 2
+  skip_intermediate_results: true
   status_comments: all
