@@ -9,6 +9,13 @@ permissions:
   contents: read
 
 jobs:
+  legacy-setup-gate:
+    name: VM7 Skip Intermediate Personal Gate 261016
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preserve the pretest queue installation path
+        run: echo "Compatibility success for setup and cleanup only"
+
   retry-a:
     name: VM7 Retry A 261019
     runs-on: ubuntu-latest
